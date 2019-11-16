@@ -62,7 +62,7 @@ var database = firebase.database();
         nextTrain = moment().add(minLeft, "minutes")
        // console.log(nextTrain)
         var timeFormat = moment(nextTrain).format("HH:mm")
-
+       $("#trainName", "#destination", "#firstTrainTime", "#frequency" ).val("")
         $("#display-data").append(
             '<tr><td>' + newTrainName +
             '</td><td>' + newDestination +
