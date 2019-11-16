@@ -35,7 +35,12 @@ var database = firebase.database();
         //dateAdded: firebase.database.ServerValue.TIMESTAMP
       });
 
-
+      
+      $("#trainName").val("");
+      $("#destination").val("");
+      $("#firstTrainTime").val("");
+      $("#frequency").val("");
+    })
 
       database.ref().on('child_added', function(childSnapshot){
         // console.log(childSnapshot.val().trainName);
@@ -62,7 +67,7 @@ var database = firebase.database();
         nextTrain = moment().add(minLeft, "minutes")
        // console.log(nextTrain)
         var timeFormat = moment(nextTrain).format("HH:mm")
-       $("#trainName", "#destination", "#firstTrainTime", "#frequency" ).val("")
+       
         $("#display-data").append(
             '<tr><td>' + newTrainName +
             '</td><td>' + newDestination +
@@ -72,13 +77,13 @@ var database = firebase.database();
         );
       }) 
 
-    })
+    
 })
 
 
 function validateTrainNameField(trainName, event){
         if (!isValidName(trainName)){
-            console.log(trainName)
+            //console.log(trainName)
             $("#nameTraine-feedback").text("Please ente at leats two characters");
             event.preventDefault();
         }else{
@@ -88,8 +93,8 @@ function validateTrainNameField(trainName, event){
 
 
 function isValidName(trainName){
-    console.log(trainName)
+    //console.log(trainName)
     var a = trainName.lenght
-    console.log(a)
+    //console.log(a)
     return trainName.lenght >= 2;
 }    
