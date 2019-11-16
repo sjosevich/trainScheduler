@@ -32,7 +32,7 @@ var database = firebase.database();
         destination: destination,
         firstTrainTime: firstTrainTime,
         frequency: frequency,
-        dateAdded: firebase.database.ServerValue.TIMESTAMP
+        //dateAdded: firebase.database.ServerValue.TIMESTAMP
       });
 
 
@@ -46,27 +46,29 @@ var database = firebase.database();
         var newDestination = childSnapshot.val().destination
         var newFirstTrainTime = childSnapshot.val().firstTrainTime
         var newFrequency = childSnapshot.val().frequency
-       // var newDateAdded = (childSnapshot.val().dateAdded * 1000)
+        //var newDateAdded = (childSnapshot.val().dateAdded * 1000)
         
         
-        var startTImeChangeFormat = moment(newFirstTrainTime, "hh:mm:ss")
+        var startTImeChangeFormat = moment(newFirstTrainTime, "hh:mm")
+        var NowMoment = moment();
+        //console.log(NowMoment)
         //console.log(moment(startTImeChangeFormat))
-        var calcuateTimeDifference = moment().diff(moment(startTImeChangeFormat), "minutes" )
-        //console.log(calcuateTimeDifference)
-        var diffTime = calcuateTimeDifference  % newFrequency;
-        //console.log(diffTime)
-        var minLeft = newFrequency - diffTime
-        //console.log(newFrequency+ "-" + diffTime + "=" + minLeft)
+        var calcuateTimeDifference_seconds = moment().diff(moment(startTImeChangeFormat), "seconds" )
+        //console.log(calcuateTimeDifference_seconds)
+        var diffTime = (calcuateTimeDifference_seconds/60)  % newFrequency;
+       // console.log(diffTime)
+        var minLeft = newFrequency - Math.round(diffTime)
+       // console.log(newFrequency+ ":"+ diffTime + "=" + minLeft)
         nextTrain = moment().add(minLeft, "minutes")
-        //console.log(nextTrain)
+       // console.log(nextTrain)
         var timeFormat = moment(nextTrain).format("HH:mm")
 
         $("#display-data").append(
             '<tr><td>' + newTrainName +
             '</td><td>' + newDestination +
             '</td><td>' + newFrequency +
-            '</td><td>' + timeFormat + 
-            '</td><td>' + calcuateTimeDifference * (-1) + '</td></tr>' 
+            '</td><td>' + timeFormat + " PM" +
+            '</td><td>' + minLeft + '</td></tr>' 
         );
       }) 
 
@@ -76,8 +78,8 @@ var database = firebase.database();
 
 function validateTrainNameField(trainName, event){
         if (!isValidName(trainName)){
-            //console.log(trainName)
-            //$("#nameTraine-feedback").text("Please ente at leats two characters");
+            console.log(trainName)
+            $("#nameTraine-feedback").text("Please ente at leats two characters");
             event.preventDefault();
         }else{
             $("#nameTraine-feedback").text("");
@@ -86,8 +88,8 @@ function validateTrainNameField(trainName, event){
 
 
 function isValidName(trainName){
-    //console.log(trainName)
-    //var a = trainName.lenght
-   // console.log(a)
+    console.log(trainName)
+    var a = trainName.lenght
+    console.log(a)
     return trainName.lenght >= 2;
 }    
